@@ -21,15 +21,15 @@ router.get('/createUser', createUser)
 // upon refresh of this particular page
 // user now has the token ot verify themselves
 // see completed tasks
-// const {completedTask} = require("../Controllers/Task/getUserCompletedTask")
-// router.get("/getCompletedTasks",authN, completedTask)
+const {completedTask} = require("../Controllers/Task/getUserCompletedTask")
+router.get("/getCompletedTasks",authN, completedTask)
 
-// // see active task
-// const {activeTask} = require("../Controllers/Task/getUserActiveTask")
-// router.get("/getActiveTask",authN, activeTask)
+// see active task
+const {activeTask} = require("../Controllers/Task/getUserActiveTask")
+router.get("/getActiveTask",authN, activeTask)
 
-// //task completed
-// const {taskCompleted} = require("../Controllers/Task/taskCompleted")
-// router.post("/taskCompleted",authN, taskCompleted)
+//task completed
+const {taskCompleted} = require("../Controllers/Task/taskCompleted")
+router.post("/taskCompleted",authN, taskCompleted)
 
 module.exports = router
