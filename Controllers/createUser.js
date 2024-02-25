@@ -34,13 +34,13 @@ exports.createUser = async (req, res) => {
                     firstName,
                     lastName,
                     mobileNumber,
+                    userRole
                 })
                 console.log(user)
 
                 // creating a payload for the token
                 const payload = {
                     id: user._id,
-                    mobileNumber: user.mobileNumber,
                     userRole: user.userRole
                 }
 

@@ -6,7 +6,7 @@ exports.authN = async (req, res, next) => {
     try{
 
         const {token} = req.body
-
+        next()
         if(!token){
             res.status(400).json({
                 success: false,
@@ -18,13 +18,13 @@ exports.authN = async (req, res, next) => {
         // verify the token and get the payload 
         try {
             
-            const payload = jwt.verify(token, process.env.JWT_SECRET)
+            const payload = jwt.verify(token, ThisIsSuperSecret)
             console.log(payload)
             req.userPayload = payload
 
         } catch (error) {
             
-            return res.status(401).json({
+            res.status(401).json({
                 success: false,
                 message: "Invalid token"
             })

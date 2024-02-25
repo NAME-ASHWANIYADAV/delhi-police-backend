@@ -1,6 +1,7 @@
 const express = require("express")
 const router = express.Router()
-const authN = require("../middlewares/authN")
+const {authN} = require("../middlewares/authN")
+const {authZ} = require("../middlewares/authZ")
 
 // this routes logs user into the app and generates a token and sends it to the user for further verification
 const {generateOTP} = require("../Controllers/generateOTP")
@@ -14,22 +15,34 @@ router.get('/checkUser', checkUser)
 const {createUser} = require("../Controllers/createUser")
 router.get('/createUser', createUser)
 
-
 // TODO:- //
-
 
 // upon refresh of this particular page
 // user now has the token ot verify themselves
 // see completed tasks
-const {completedTask} = require("../Controllers/Task/getUserCompletedTask")
-router.get("/getCompletedTasks",authN, completedTask)
+// const {completedTask} = require("../Controllers/Task/getUserCompletedTask")
+// router.get("/getCompletedTasks",authN, completedTask)
 
-// see active task
-const {activeTask} = require("../Controllers/Task/getUserActiveTask")
-router.get("/getActiveTask",authN, activeTask)
+// // see active task
+// const {activeTask} = require("../Controllers/Task/getUserActiveTask")
+// router.get("/getActiveTask",authN, activeTask)
 
-//task completed
-const {taskCompleted} = require("../Controllers/Task/taskCompleted")
-router.post("/taskCompleted",authN, taskCompleted)
+// //task completed
+// const {taskCompleted} = require("../Controllers/Task/taskCompleted")
+// router.post("/taskCompleted",authN, taskCompleted)
+
+// REGULATOR routes
+
+// // get the list of all the user
+const {getUserList} = require("../Controllers/Regulator/getUserList")
+router.get("/getUserList", authN, authZ, getUserList)
+
+// create task for a user
+const {createTask} = require("../Controllers/Regulator/createTask")
+router.post("/createTask",authN,authZ, createTask)
+
+// get profile of a specific user with all the data
+const {getUserProfile} = require("../Controllers/Regulator/getUserProfile")
+router.get("/getUserProfile/:id", authN, authZ, getUserProfile)
 
 module.exports = router
