@@ -27,9 +27,9 @@ router.get('/createUser', createUser)
 // const {activeTask} = require("../Controllers/Task/getUserActiveTask")
 // router.get("/getActiveTask",authN, activeTask)
 
-// //task completed
-// const {taskCompleted} = require("../Controllers/Task/taskCompleted")
-// router.post("/taskCompleted",authN, taskCompleted)
+//task completed
+const {taskCompleted} = require("../Controllers/Task/taskCompleted")
+router.post("/taskCompleted",authN, taskCompleted)
 
 // REGULATOR routes
 

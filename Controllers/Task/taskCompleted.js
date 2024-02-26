@@ -1,7 +1,7 @@
 
 const Task = require('../models/Task'); // Import your Task Mongoose model
 
-exports.completeTask = async (req, res) => {
+exports.taskCompleted = async (req, res) => {
     try {
         const { userId, taskIds, completionTime } = req.body;
 
