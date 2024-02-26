@@ -33,20 +33,10 @@ const UserSchema = new mongoose.Schema({
         type:String,
         enum:["User","Admin","Regulator", "MaterAdmin"],
     },
-    ActiveTask:{
-        type:Array,
-        items:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:'task'
-        }
-    },
-    CompletedTask:{
-        type:Array,
-        items:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:'task'
-        }
-    },
+    ActiveTask:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'task'
+    }],
     CompletedTask:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'task'

@@ -22,7 +22,7 @@ const TaskSchema = new mongoose.Schema({
         default:"Active",
     },
     CompletedBy:{
-        type:mongoose.Types.ObjectId,
+        _id:mongoose.Schema.Types.ObjectId,
         Ref:'user',
 
     },
@@ -44,4 +44,7 @@ const TaskSchema = new mongoose.Schema({
     },
     
 })
-module.exports = mongoose.model("task", TaskSchema);
+module.exports = mongoose.model("task", UserSchema);
+
+// const Task = model("task", TaskSchema)
+// module.exports = Task;
