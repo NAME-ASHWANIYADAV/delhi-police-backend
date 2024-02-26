@@ -1,38 +1,42 @@
 
-const Task = require('../models/Task'); // Import your Task Mongoose model
+const express = require('express');
+const router = express.Router();
+const User = require('../models/user'); // Adjust the path accordingly
 
-exports.taskCompleted = async (req, res) => {
+router.post('/completeTask/:userId', async (req, res) => {
+    const userId = req.params.userId;
+
     try {
-        const { userId, taskIds, completionTime } = req.body;
+        // Find the user by ID
+        const user = await User.findById(userId);
 
-        // Find the active task for the given user
-        const activeTask = await Task.findOne({ userId, status: 'active' });
-
-        if (!activeTask) {
-            return res.status(404).json({ message: 'Active task not found for the user' });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
         }
 
-        // Check if the received task IDs match the active task ID
-        const matchingTaskId = taskIds.find(taskId => taskId === activeTask.taskId);
+        // Assume taskId is sent in the request body
+        const taskId = req.params.taskId;
 
-        if (!matchingTaskId) {
-            return res.status(400).json({ message: 'No matching task ID found' });
+        // Check if the task exists in the ActiveTask array
+        const taskIndex = user.ActiveTask.indexOf(taskId);
+        if (taskIndex === -1) {
+            return res.status(404).json({ message: 'Task not found in ActiveTask' });
         }
 
-        // Check if completion time has passed
-        if (new Date(completionTime) > new Date()) {
-            return res.status(400).json({ message: 'Completion time has not passed yet' });
-        }
+        // Remove the task from ActiveTask
+        user.ActiveTask.splice(taskIndex, 1);
 
-        // Update the status of the task to 'completed'
-        activeTask.status = 'completed';
+        // Add the task to CompletedTask
+        user.CompletedTask.push(taskId);
 
-        // Save the updated task to the database
-        await activeTask.save();
+        // Save the updated user
+        await user.save();
 
-        res.status(200).json({ message: 'Task completed and updated in the database' });
+        res.status(200).json({ message: 'Task completed successfully' });
     } catch (error) {
-        console.error('Error completing task:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
     }
-};
+});
+
+module.exports = router;
