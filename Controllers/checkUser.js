@@ -13,7 +13,7 @@ exports.checkUser = async (req, res) => {
         if(!mobileNumber){
             return res.status(401).json({
                 success: false,
-                messsage: "mobileNumber feild cannot be empty"
+                messsage: "mobileNumber field cannot be empty"
             })
         }
 
