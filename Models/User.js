@@ -35,14 +35,18 @@ const UserSchema = new mongoose.Schema({
     },
     ActiveTask:[{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'task'
+        ref:'Task',
     }],
     CompletedTask:[{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'task'
+        ref:'Task',
     }]
 
 
 })
 
-module.exports = mongoose.model("user", UserSchema);
+module.exports = mongoose.model("User", UserSchema);
+
+// const User = model("user", TaskSchema)
+// module.exports = User;
+

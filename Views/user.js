@@ -25,7 +25,7 @@ router.get('/createUser', createUser)
 
 // // see active task
 // const {activeTask} = require("../Controllers/Task/getUserActiveTask")
-// router.get("/getActiveTask",authN, activeTask)
+// router.get("/getActiveTask/:id",authN, activeTask)
 
 // //task completed
 // const {taskCompleted} = require("../Controllers/Task/taskCompleted")
