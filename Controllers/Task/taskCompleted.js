@@ -1,12 +1,15 @@
 
 const Task = require('../models/Task'); // Import your Task Mongoose model
+const User = require('../../Models/User')
 
 exports.completeTask = async (req, res) => {
     try {
-        const { userId, taskIds, completionTime } = req.body;
+        //const { userId, taskIds, completionTime } = req.body;
 
         // Find the active task for the given user
-        const activeTask = await Task.findOne({ userId, status: 'active' });
+        const userID = req.body
+        const userId = await User.find({ _id:userID });
+        const activeTask = userId.ActiveTask
 
         if (!activeTask) {
             return res.status(404).json({ message: 'Active task not found for the user' });
