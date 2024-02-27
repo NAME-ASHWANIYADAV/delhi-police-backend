@@ -1,41 +1,41 @@
 
-const Task = require('../models/Task'); // Import your Task Mongoose model
-const User = require('../../Models/User')
+const User = require("../../Models/User");
+const Task = require("../../Models/Task");
 
-exports.completeTask = async (req, res) => {
-    try {
-        //const { userId, taskIds, completionTime } = req.body;
+exports.taskCompleted = async (req, res) => {
+  try {
+    const userID = req.userPayload.userID;
+    const user = await User.findById(userID);
 
-        // Find the active task for the given user
-        const userID = req.body
-        const userId = await User.find({ _id:userID });
-        const activeTask = userId.ActiveTask
-
-        if (!activeTask) {
-            return res.status(404).json({ message: 'Active task not found for the user' });
-        }
-
-        // Check if the received task IDs match the active task ID
-        const matchingTaskId = taskIds.find(taskId => taskId === activeTask.taskId);
-
-        if (!matchingTaskId) {
-            return res.status(400).json({ message: 'No matching task ID found' });
-        }
-
-        // Check if completion time has passed
-        if (new Date(completionTime) > new Date()) {
-            return res.status(400).json({ message: 'Completion time has not passed yet' });
-        }
-
-        // Update the status of the task to 'completed'
-        activeTask.status = 'completed';
-
-        // Save the updated task to the database
-        await activeTask.save();
-
-        res.status(200).json({ message: 'Task completed and updated in the database' });
-    } catch (error) {
-        console.error('Error completing task:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
     }
+
+    const activeTasks = user.ActiveTask;
+
+    for (const taskId of activeTasks) {
+      const taskData = await Task.findById(taskId);
+
+      if (taskData) {
+        // Update the task status to "completed"
+        taskData.Status = "completed";
+        // Update the CompletedBy field to the user's ID
+        taskData.CompletedBy = userID;
+        await taskData.save();
+
+        // Move the task from ActiveTask to CompletedTask in the user document
+        user.CompletedTask.push(taskId);
+        user.ActiveTask = user.ActiveTask.filter(taskId => taskId.toString() !== taskData._id.toString());
+      }
+    }
+
+    // Save the updated user document
+    await user.save();
+
+    res.status(200).json({ message: "Active tasks updated successfully" });
+  } catch (error) {
+    console.error("Error updating active tasks:", error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
+
