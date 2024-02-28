@@ -24,12 +24,12 @@ router.get('/createUser', createUser)
 // router.get("/getCompletedTasks",authN, completedTask)
 
 // // see active task
-// const {activeTask} = require("../Controllers/Task/getUserActiveTask")
-// router.get("/getActiveTask/:id",authN, activeTask)
+const {activeTask} = require("../Controllers/Task/getUserActiveTask")
+router.get("/getActiveTask/:id",authN, activeTask)
 
 // //task completed
-// const {taskCompleted} = require("../Controllers/Task/taskCompleted")
-// router.post("/taskCompleted",authN, taskCompleted)
+const {taskCompleted} = require("../Controllers/Task/taskCompleted")
+router.post("/taskCompleted",authN, taskCompleted)
 
 // REGULATOR routes
 

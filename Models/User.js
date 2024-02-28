@@ -31,7 +31,7 @@ const UserSchema = new mongoose.Schema({
     },
     UserRole:{
         type:String,
-        enum:["User","Admin","Regulator", "MaterAdmin"],
+        enum:["USER","ADMIN","REGULATOR", "MASTERADMIN"],
     },
     ActiveTask:[{
         type:mongoose.Schema.Types.ObjectId,
