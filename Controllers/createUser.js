@@ -1,76 +1,75 @@
-const User = require("../Models/User")
-require("dotenv").config()
-const jwt = require('jsonwebtoken')
+const User = require("../Models/User");
+require("dotenv").config();
+const jwt = require('jsonwebtoken');
 
 exports.createUser = async (req, res) => {
-    try{
+    let token; // Declare token outside the try-catch block
 
-        // getting data from request body 
-        const {firstName, lastName, mobileNumber} = req.body
-        let token
-        // check if any of the input field is empty or not 
-        if(!firstName || !lastName || !mobileNumber){
+    try {
+        const { firstName, lastName, mobileNumber, userRole } = req.body;
+
+        if (!firstName || !lastName || !mobileNumber) {
             return res.status(400).json({
                 success: false,
                 message: "All the fields must be filled properly"
-            })
+            });
         }
 
-        // check if the user already exist - (interact with the database using the User model)
-        const existingUser = await User.findOne({mobileNumber: mobileNumber})
-        // console.log/("existing user-")
-        // console.log(existingUser)
-        if(existingUser){
+        const existingUser = await User.findOne({ mobileNumber: mobileNumber });
+
+        if (existingUser) {
             return res.status(400).json({
                 success: false,
-                message: "User already exist try logging in..."
-            })
+                message: "User already exists. Try logging in."
+            });
         }
 
-        // userCreation 
-        console.log("user creation Started")
-            try{
-                const user = await User.create({
-                    firstName,
-                    lastName,
-                    mobileNumber,
-                    userRole
-                })
-                console.log(user)
+        console.log("User creation started");
 
-                // creating a payload for the token
-                const payload = {
-                    id: user._id,
-                    userRole: user.userRole
-                }
+        try {
+            const user = await User.create({
+                firstName,
+                lastName,
+                mobileNumber,
+                userRole
+            });
 
-                token = jwt.sign(payload, process.env.JWT_SECRET)
+            const payload = {
+                id: user._id,
+                userRole: user.userRole
+            };
 
-                console.log("token creation successful...")            
-                console.log("token " + token)
+            token = jwt.sign(payload, process.env.JWT_SECRET);
+            console.log("Token creation successful...");
+            console.log("Token: " + token);
+        } catch (e) {
+            return res.status(500).json({
+                success: false,
+                message: "User creation failed",
+                cause: e
+            });
+        }
 
-            }catch(e) {
-                res.json({
-                    success: false,
-                    message: "user creation failed",
-                    cause: e
-                })
-            }
-            console.log("user Created")
+        console.log("User created");
 
-            // generating token for user
-            
+        // Check if token is defined before using it in the response
+        if (token) {
             return res.status(200).json({
                 success: true,
                 token: token,
-                message: `User created successfully`
-            })
-
-    }catch(err){
-        res.json({
+                message: "User created successfully"
+            });
+        } else {
+            return res.status(500).json({
+                success: false,
+                message: "Token not generated"
+            });
+        }
+    } catch (err) {
+        return res.status(500).json({
             success: false,
-            message: "user creation failed",
+            message: "User creation failed",
             cause: err
-        })
+        });
     }
-}
+};
