@@ -19,6 +19,7 @@ exports.checkUser = async (req, res) => {
 
         console.log(mobileNumber)
         const user = await User.findOne({mobileNumber: mobileNumber})
+        console.log(User.find({}))
 
         if(!user){
             return res.status(500).json({

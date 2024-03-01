@@ -3,7 +3,7 @@ require("dotenv").config()
 // twilio trail credentials
 
 const accountSid = 'AC1eada4dadd93c9df2165cb88aef20a57';
-const authToken = '3ce443f91c24dae05b80a0fdaaabad91';
+const authToken = '091221ef2305e6c5a14aee611a47cdc4';
 const client = require('twilio')(accountSid, authToken);
 const twilioTrialPhoneNumber = '+17792092603';
 

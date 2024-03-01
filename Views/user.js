@@ -38,8 +38,8 @@ const {getUserList} = require("../Controllers/Regulator/getUserList")
 router.get("/getUserList", authN, authZ, getUserList)
 
 // create task for a user
-// const {createTask} = require("../Controllers/Regulator/createTask")
-// router.post("/createTask",authN,authZ, createTask)
+const {createTask} = require("../Controllers/Regulator/createTask")
+router.get("/createTask",authN,authZ, createTask)
 
 // get profile of a specific user with all the data
 const {getUserProfile} = require("../Controllers/Regulator/getUserProfile")

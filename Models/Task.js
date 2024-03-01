@@ -42,7 +42,6 @@ const TaskSchema = new mongoose.Schema({
         type:Number,
         require:true,
     },
-    
 })
 module.exports = mongoose.model("Task", TaskSchema);
 

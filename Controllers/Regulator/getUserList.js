@@ -12,7 +12,8 @@ exports.getUserList = async (req, res) => {
                 message: "No user data available"
             })
         }else{
-            res.status(200).json({
+            console.log(res)
+            res.json({
                 status: true,
                 userData: userData,
                 message: "User Data retrieved successfully"
@@ -20,6 +21,7 @@ exports.getUserList = async (req, res) => {
         }
 
     }catch(e){
+        console.log(e)
         res.status(400).json({
             success: false,
             error: e,
